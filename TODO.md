@@ -1,0 +1,3 @@
+-   Add support for YouTube, Instagram, TikTok and Twitch.
+-   Tests (probably with jest)
+-   Settings where you can turn individual platforms on and off.
