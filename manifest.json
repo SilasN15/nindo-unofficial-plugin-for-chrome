@@ -1,0 +1,19 @@
+{
+  "name": "Nindo unofficial plugin",
+  "description": "This is the unofficial Nindo plugin. You can click on the plugin icon to get to the artist's Nindo page. We plan to support the following sites: YouTube, Instagram, TikTok, Twitter and Twitch. Unfortunately only Twitter is supported at the moment. If you found a bug, feel free to report it on GitHub. I am happy about every contributor. This project is licensed under the MIT license. For more information, visit https://opensource.org/licenses/MIT.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {},
+  "permissions": ["tabs", "activeTab", "storage", "contextMenus"],
+  "host_permissions": [
+    "https://www.instagram.com/*",
+    "https://twitter.com/*",
+    "https://www.twitch.tv/*",
+    "https://www.tiktok.com/*",
+    "https://www.youtube.com/*",
+    "https://api.nindo.de/*"
+  ]
+}

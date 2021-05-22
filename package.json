@@ -1,0 +1,20 @@
+{
+  "name": "nindo-plugin-chrome",
+  "version": "1.0.0",
+  "description": "This is the unofficial Nindo plugin. You can click on the plugin icon to get to the artist's Nindo page. Currently the following sites are supported: YouTube, Instagram, TikTok, Twitter and Twitch. If you found a bug, feel free to report it on GitHub. I am happy about every contributor. This project is licensed under the MIT license. For more information, visit https://opensource.org/licenses/MIT.",
+  "main": "./src/background.ts",
+  "author": "Silas",
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^2.48.0",
+    "rollup-plugin-commonjs": "^10.1.0"
+  },
+  "scripts": {
+    "build": "rollup ./src/background.js --config rollup.config.js",
+    "build:watch": "rollup ./src/background.js --config rollup.config.js --watch"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "requests": "^0.3.0"
+  }
+}
