@@ -1,3 +1,5 @@
+'use strict';
+
 const tryOpenNindoPage = async (tab) => {
     const tabUrl = tab.url;
     const title = tab.title;
@@ -79,4 +81,8 @@ const getArtistTikTok = (title) => {
     return title;
 };
 
-export default tryOpenNindoPage;
+try {
+  chrome.action.onClicked.addListener(tryOpenNindoPage);
+} catch (error) {
+  console.error(error);
+}
