@@ -8,7 +8,7 @@ const typeToSiteTable = {
 }
 
 const tryOpenNindoPage = async (tab) => {
-    const whitelistedSites = ["instagram", "twitter", "twitch", "tiktok"];
+    const whitelistedSites = ['instagram', 'twitter', 'twitch', 'tiktok'];
     const tabUrl = tab.url;
     const title = tab.title;
 
