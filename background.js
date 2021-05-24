@@ -1,51 +1,40 @@
 'use strict';
 
+const typeToSiteTable = {
+  "instagram": "instagram.com",
+  "twitter": "twitter.com",
+  "twitch": "twitch.tv",
+  "tiktok": "tiktok.com"
+}
+
 const tryOpenNindoPage = async (tab) => {
+    const whitelistedSites = ['instagram', 'twitter', 'twitch', 'tiktok'];
     const tabUrl = tab.url;
     const title = tab.title;
+
     if (!tabUrl?.startsWith('https://') && !tabUrl?.startsWith('http://')) {
         throw Error('Invalid Protocol for url: ' + tabUrl);
     }
+
     let urlWithoutProtocol = tabUrl.replace('https://', '');
     urlWithoutProtocol = urlWithoutProtocol.replace('http://', '');
     urlWithoutProtocol = urlWithoutProtocol.replace('www.', '');
-    if (urlWithoutProtocol.startsWith('twitter')) {
-        console.log('twitter detected');
-        const artistName = getArtistTwitter(urlWithoutProtocol);
-        const res = await fetchNindoSmart(artistName);
-        const json = await res.json();
-        console.log(json);
-        const id = json[0].id;
+
+    for (let whiteListedSite of whitelistedSites) {
+      if (urlWithoutProtocol.startsWith(whiteListedSite)) {
+        console.log(urlWithoutProtocol + " detected!");
+
+        var artistName = getArtistName(urlWithoutProtocol, whiteListedSite);
+        var res = await fetchNindoSmart(artistName);
+        var json = await res.json();
+        var id = json[0].id;
+
         chrome.tabs.create({
-            url: 'https://nindo.de/artist/' + id,
+          url: 'https://nindo.de/artist' + id
         });
-    } else if (urlWithoutProtocol.startsWith('instagram')) {
-        console.log('twitter instagram');
-        const artistName = getArtistInstagram(urlWithoutProtocol);
-        const res = await fetchNindoSmart(artistName);
-        const json = await res.json();
-        const id = json[0].id;
-        chrome.tabs.create({
-            url: 'https://nindo.de/artist/' + id,
-        });
-    } else if (urlWithoutProtocol.startsWith('twitch')) {
-        console.log('twitch detected');
-        const artistName = getArtistTwitch(urlWithoutProtocol);
-        const res = await fetchNindoSmart(artistName);
-        const json = await res.json();
-        const id = json[0].id;
-        chrome.tabs.create({
-            url: 'https://nindo.de/artist/' + id,
-        });
-    } else if (urlWithoutProtocol.startsWith('tiktok')) {
-        console.log('tiktok detected');
-        const artistName = getArtistTikTok(title);
-        const res = await fetchNindoSmart(artistName);
-        const json = await res.json();
-        const id = json[0].id;
-        chrome.tabs.create({
-            url: 'https://nindo.de/artist/' + id,
-        });
+
+        break;
+      }
     }
 };
 
@@ -54,32 +43,18 @@ const fetchNindoSmart = async (name) => {
     return await fetch('https://api.nindo.de/search/smart/' + name);
 };
 
-const getArtistTwitter = (url) => {
-    url = url.replace('/', '');
-    url = url.replace('twitter.com', '');
+const getArtistName(url, type) {
+  if (type != "tiktok") {
+    url = url.replaceAll('/', '');
+    url = url.replace(typeToSiteTable[type], '');
     return url;
-};
-
-const getArtistInstagram = (url) => {
+  } else {
     url = url.replace('/', '');
-    url = url.replace('/', '');
-    url = url.replace('instagram.com', '');
+    url = url.replace(typeToSiteTable[type], '');
+    url = url.substr(1, url.length-2);
     return url;
-};
-
-const getArtistTwitch = (url) => {
-    url = url.replace('/', '');
-    url = url.replace('/', '');
-    url = url.replace('twitch.tv', '');
-    return url;
-};
-
-const getArtistTikTok = (title) => {
-    const to = title.indexOf(' (@');
-    title = title.substr(0, to);
-    console.log(title);
-    return title;
-};
+  }
+}
 
 try {
   chrome.action.onClicked.addListener(tryOpenNindoPage);
